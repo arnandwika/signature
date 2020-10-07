@@ -136,7 +136,7 @@
                             <a class="nav-link text-light" href="/about">{{ ('About') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="/services">{{ ('Services') }}</a>
+                            <a class="nav-link text-light" href="{{ route('signs.history') }}">{{ ('History') }}</a>
                         </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="/posts">{{ ('Blog') }}</a>

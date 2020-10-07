@@ -21,6 +21,24 @@ class SignsController extends Controller
     //     return view('signs.show')->with('file', $file_name);
         
     // }
+
+    public function history(){
+        $user = auth()->user()->id;
+        $signs = DB::select('SELECT * from signs INNER JOIN assigns on signs.id = assigns.post_id where assigns.assigned_id = '.$user.' AND assigns.status = 2');
+        return view('signs.history')->with('signs', $signs);
+    }
+
+    public function cancel($id){
+        $assigned_id = auth()->user()->id;
+        $assign = Assign::where('post_id', $id)->where('assigned_id', $assigned_id)->first();
+        $new_status = $assign->status-1;
+        $assign->update([
+            'status' => $new_status
+        ]);
+
+        return redirect('/home')->with('success', 'Your status reverted');
+    }
+
     public function fetchSearch(){
         $output = '';
         $users = User::all();

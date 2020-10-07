@@ -1,11 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>{{$sign->file_name}}</h2>
+    @php
+        $allowedRevert=0;
+        $allowedUpload=0;
+    @endphp
+    @foreach ($assigneds as $assigned)
+        @if (Auth::user()->id == $assigned->assigned_id && $assigned->status != 0)
+            @php
+                $allowedRevert=1;
+            @endphp
+        @endif
+        @if (Auth::user()->id == $assigned->assigned_id && $assigned->status == 1)
+            @php
+                $allowedUpload=1;
+            @endphp
+        @endif
+    @endforeach
+    <a href="{{ route('signs.show', $sign->id) }}"><h2>{{$sign->file_name}}</h2></a>
     <div class="d-flex justify-content-between">
         <small>Submitted on {{$sign->created_at}} by {{$user->name}}</small>
-        <a href="/signs/upload/{{$sign->id}}" class="btn btn-success">Upload Signed File</a>
+        @if ($allowedUpload==1)
+            <a href="/signs/upload/{{$sign->id}}" class="btn btn-success">Upload Signed File</a>
+        @endif
     </div>
+    
+    @if ($allowedRevert==1)
+        <a href="/signs/cancel/{{$sign->id}}" class="btn btn-warning">Revert Status</a>
+    @endif
     <hr>
     <div class="card">
         <div class="card-header">
@@ -63,6 +85,7 @@
                     </div>
                 @endif
             </div>
+            <small>Refresh after download for reload the status</small>
         </div>
     </div>
     <hr>

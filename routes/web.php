@@ -19,7 +19,11 @@ Route::get('/about', 'PagesController@about');
 
 Route::get('/services', 'PagesController@services');
 
+Route::get('/signs/history', 'SignsController@history')->name('signs.history');
+
 Route::get('/signs/upload/{sign}', 'SignsController@upload');
+
+Route::get('/signs/cancel/{sign}', 'SignsController@cancel');
 
 Route::post('/signs/fetchSearch', 'SignsController@fetchSearch')->name('signs.fetch');
 
