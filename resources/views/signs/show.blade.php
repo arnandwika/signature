@@ -85,7 +85,7 @@
                     </div>
                 @endif
             </div>
-            <small>Refresh after download for reload the status</small>
+            <small>*Refresh after download for reload the status</small>
         </div>
     </div>
     <hr>

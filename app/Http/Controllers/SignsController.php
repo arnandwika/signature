@@ -157,7 +157,8 @@ class SignsController extends Controller
     {
         $this->validate($request,[
             'pdf_file' => 'required|mimetypes:application/pdf',
-            'description' => 'required'
+            'description' => 'required',
+            'assign' => 'required'
         ]);
         //handle file upload
         if($request->hasFile('pdf_file')){
@@ -169,12 +170,29 @@ class SignsController extends Controller
         }
 
         $sign = new Signs;
+        $assigned_ids = $request->input('assign');
+        $temp_assign=array();
+        $index=0;
+        
+        // foreach($assigned_ids as $assigned_id){
+        //     $temp_assign[$index] = $assigned_id;
+        //     $index++;
+        // }
+        // foreach($assigned_ids as $assigned_id){
+        //     foreach($temp_assign as $temp){
+        //         if($assigned_id == $temp){
+        //             return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
+        //         }
+        //     }
+        // }
+
+        
         $sign->description = $request->input('description');
         $sign->file_name = $fileNameToStore;
         $sign->user_id = auth()->user()->id;
         $sign->save();
 
-        $assigned_ids = $request->input('assign');
+        
         foreach($assigned_ids as $assigned_id){
             $assign = new Assign;
             $assign->submitter_id = auth()->user()->id;
@@ -184,6 +202,7 @@ class SignsController extends Controller
             $assign->save();
         }
 
+        
         return redirect('/signs')->with('success', 'File submitted');
     }
 

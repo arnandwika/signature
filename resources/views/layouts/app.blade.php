@@ -17,6 +17,7 @@
     <script>
         $(document).ready(function() {
             $('#example').DataTable();
+
             var count =1;
 
             $('#dynamic_assign').html('');
@@ -44,34 +45,44 @@
             //     $('#searchUser').val($(this).val());
             //     $('#searchList').fadeOut();
             // });
-            $(document).on('click', '#assignEmployee', function(){
-                let plus = document.getElementById("space");
-                let div = document.getElementById("employee");
-                let form = document.createElement('input');
-                let line = document.createElement('br');
-                form.id = "searchUser";
-                form.name = "assign";
-                form.className = "form-control";
-                form.type = "text";
-                form.placeholder = "Assign user";
-                div.insertBefore(form, plus);
-            });
+            // $(document).on('click', '#assignEmployee', function(){
+            //     let plus = document.getElementById("space");
+            //     let div = document.getElementById("employee");
+            //     let form = document.createElement('input');
+            //     let line = document.createElement('br');
+            //     form.id = "searchUser";
+            //     form.name = "assign";
+            //     form.className = "form-control";
+            //     form.type = "text";
+            //     form.placeholder = "Assign user";
+            //     div.insertBefore(form, plus);
+            // });
             function add_dynamic_assign(count){
                 var button='';
                 if(count>1){
                     button = '<button type="button" name="remove" id="'+count+'" class="btn btn-danger btn-outline-dark remove">-</button>'
                 }else{
-                    button = '<button type="button" name="plus" id="plus" class="btn btn-success btn-outline-dark">+</button>'
+                    button = '<button type="button" name="plus" id="plus_temp" class="btn btn-success btn-outline-dark disabled">+</button>'
                 }
                 output = '<tr id="row'+count+'">';
-                output += '<td><select id="fetch'+count+'" required name="assign[]" class="form-control"><option disabled selected>Select employee</option>'+fetchingData()+'</select>';
+                output += '<td><select id="fetch'+count+'" required name="assign[]" class="form-control select_employee"><option disabled selected>Select employee</option>'+fetchingData()+'</select>';
                 output += '<td align="left">'+button+'</td></tr>';
                 $('#dynamic_assign').append(output);
             }
             
+            $(document).on('change', '.select_employee', function(){
+                if(document.getElementById('plus_temp')){
+                    var plus_button = document.getElementById('plus_temp');
+                plus_button.className = "btn btn-success btn-outline-dark";
+                plus_button.id = "plus";
+                }
+            });
             
             $(document).on('click', '#plus', function(){
                 count = count + 1;
+                var plus_button = document.getElementById('plus');
+                plus_button.className = "btn btn-success btn-outline-dark disabled";
+                plus_button.id = "plus_temp";
                 add_dynamic_assign(count);
             });
             $(document).on('click', '.remove', function(){
@@ -121,9 +132,11 @@
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="/posts/create">Create Post</a>
                         </li> --}}
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="/signs/create">Request Signature</a>
-                        </li>
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="/signs/create">Request Signature</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -132,18 +145,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="/">{{ ('Home') }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="/about">{{ ('About') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="{{ route('signs.history') }}">{{ ('History') }}</a>
-                        </li>
                         {{-- <li class="nav-item">
-                            <a class="nav-link" href="/posts">{{ ('Blog') }}</a>
+                            <a class="nav-link text-light" href="/about">{{ ('About') }}</a>
                         </li> --}}
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="/signs">{{ ('File') }}</a>
-                        </li>
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{ route('signs.history') }}">{{ ('History') }}</a>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a class="nav-link" href="/posts">{{ ('Blog') }}</a>
+                            </li> --}}
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="/signs">{{ ('File') }}</a>
+                            </li>
+                        @endauth
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>

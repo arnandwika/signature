@@ -31,9 +31,4 @@
     </div>
     {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
     {!! Form::close() !!}
-    <script>
-        function plus(){
-            document.getElementById('assign').innerHTML="wow";
-        }
-    </script>
 @endsection
