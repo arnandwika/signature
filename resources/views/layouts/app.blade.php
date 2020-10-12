@@ -65,7 +65,7 @@
                     button = '<button type="button" name="plus" id="plus_temp" class="btn btn-success btn-outline-dark disabled">+</button>'
                 }
                 output = '<tr id="row'+count+'">';
-                output += '<td><select id="fetch'+count+'" required name="assign[]" class="form-control select_employee"><option disabled selected>Select employee</option>'+fetchingData()+'</select>';
+                output += '<td><select id="fetch'+count+'" required name="assign[]" class="form-control select_employee"><option disabled selected>Pilih karyawan yang harus menandatangani file</option>'+fetchingData()+'</select>';
                 output += '<td align="left">'+button+'</td></tr>';
                 $('#dynamic_assign').append(output);
             }

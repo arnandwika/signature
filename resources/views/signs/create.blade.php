@@ -4,13 +4,13 @@
     <h1>Request Signature</h1>
     {!! Form::open(['action' => 'SignsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
     <div class="form-group">
-        {{Form::label('title', 'File to sign')}}
+        {{Form::label('title', 'Upload file pdf yang ingin anda ajukan untuk ditandatangani')}}
         <br>
         {{Form::file('pdf_file')}}
     </div>
     <div class="form-group">
         {{Form::label('description', 'Description')}}
-        {{Form::textarea('description', '', ['class' => 'form-control', 'placeholder' => 'Description'])}}
+        {{Form::textarea('description', '', ['class' => 'form-control', 'placeholder' => 'Deskripsi'])}}
     </div>
     <div class="form-group" id="employee">
         {{Form::label('assign', 'Assign Employee')}}

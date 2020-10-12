@@ -171,21 +171,19 @@ class SignsController extends Controller
 
         $sign = new Signs;
         $assigned_ids = $request->input('assign');
-        $temp_assign=array();
-        $index=0;
+        $index=1;
+        $length = count($assigned_ids);
+        $i=0;
         
-        // foreach($assigned_ids as $assigned_id){
-        //     $temp_assign[$index] = $assigned_id;
-        //     $index++;
-        // }
-        // foreach($assigned_ids as $assigned_id){
-        //     foreach($temp_assign as $temp){
-        //         if($assigned_id == $temp){
-        //             return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
-        //         }
-        //     }
-        // }
-
+        foreach($assigned_ids as $assigned_id){
+            $temp_assign = $assigned_id;
+            for($i=$index; $i<$length; $i++){
+                if($temp_assign == $assigned_ids[$i]){
+                    return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
+                }
+                $index++;
+            }
+        }
         
         $sign->description = $request->input('description');
         $sign->file_name = $fileNameToStore;
