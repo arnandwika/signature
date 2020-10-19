@@ -17,24 +17,30 @@
             @endphp
         @endif
     @endforeach
-    <a href="{{ route('signs.show', $sign->id) }}"><h2>{{$sign->file_name}}</h2></a>
+    <h2>{{$sign->file_name}}</h2>
+    <small>Submitted on {{$sign->created_at}} by {{$user->name}}</small>
+    <br>
+    <h4>{{$sign->description}}</h4>
+    <hr>
     <div class="d-flex justify-content-between">
-        <small>Submitted on {{$sign->created_at}} by {{$user->name}}</small>
+        @if ($allowedRevert==1)
+            <a href="/signs/cancel/{{$sign->id}}" class="btn btn-warning">Revert Status</a>
+        @else
+            <a href="/signs/cancel/{{$sign->id}}" class="btn btn-info disabled">Revert Status</a>
+        @endif
         @if ($allowedUpload==1)
             <a href="/signs/upload/{{$sign->id}}" class="btn btn-success">Upload Signed File</a>
+        @else
+            <a href="/signs/cancel/{{$sign->id}}" class="btn btn-info disabled">Upload Signed File</a>
         @endif
     </div>
-    
-    @if ($allowedRevert==1)
-        <a href="/signs/cancel/{{$sign->id}}" class="btn btn-warning">Revert Status</a>
-    @endif
     <hr>
     <div class="card">
         <div class="card-header">
             Requested Signature
         </div>
         <div class="card-body">
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -82,6 +88,10 @@
                         {{Form::hidden('_method' , 'DELETE')}}
                         {{Form::submit('Delete File', ['class' => 'btn btn-danger'])}}
                         {!! Form::close() !!}
+                    </div>
+                @else
+                    <div>  
+                        <a href="{{ route('signs.destroy', $sign->id) }}" class="btn btn-info disabled">Delete</a>
                     </div>
                 @endif
             </div>

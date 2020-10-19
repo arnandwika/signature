@@ -29,6 +29,6 @@
             </div>
         @endforeach --}}
     </div>
-    {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+    {{Form::submit('Request', ['class' => 'btn btn-primary'])}}
     {!! Form::close() !!}
 @endsection

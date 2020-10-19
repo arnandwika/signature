@@ -6,11 +6,11 @@
             <h1>File submitted</h1>
         </div>
         <div class="card-body">
-            @if(count($signs) > 0)
+            @if(count($signs ?? '') > 0)
                 @php
                     $no = 1;
                 @endphp
-                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
                     <thead>
                         <tr>
                             <th>File name</th>
@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($signs as $sign)
+                        @foreach ($signs ?? '' as $sign)
                                 <tr>
                                     <td><a href="{{ route('signs.show', $sign->id) }}">{{$sign->file_name}}</a></td>
                                     <td>{{$sign->created_at}}</td>

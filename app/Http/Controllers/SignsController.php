@@ -7,6 +7,7 @@ use App\Signs;
 use App\User;
 use App\Assign;
 use App\DataTables\SignsDataTable;
+use App\Mail\BlastGmail;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
@@ -161,47 +162,56 @@ class SignsController extends Controller
             'assign' => 'required'
         ]);
         //handle file upload
-        if($request->hasFile('pdf_file')){
-            $filenameWithExt = $request->file('pdf_file')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('pdf_file')->getClientOriginalExtension();
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-            $path = $request->file('pdf_file')->storeAs('public/pdf_files', $fileNameToStore);
-        }
+        // if($request->hasFile('pdf_file')){
+        //     $filenameWithExt = $request->file('pdf_file')->getClientOriginalName();
+        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        //     $extension = $request->file('pdf_file')->getClientOriginalExtension();
+        //     $fileNameToStore = $filename.'_'.time().'.'.$extension;
+        //     $path = $request->file('pdf_file')->storeAs('public/pdf_files', $fileNameToStore);
+        // }
 
-        $sign = new Signs;
-        $assigned_ids = $request->input('assign');
-        $index=1;
-        $length = count($assigned_ids);
-        $i=0;
+        // $sign = new Signs;
+        // $assigned_ids = $request->input('assign');
+        // $index=1;
+        // $length = count($assigned_ids);
+        // $i=0;
         
-        foreach($assigned_ids as $assigned_id){
-            $temp_assign = $assigned_id;
-            for($i=$index; $i<$length; $i++){
-                if($temp_assign == $assigned_ids[$i]){
-                    return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
-                }
-                $index++;
-            }
-        }
+        // foreach($assigned_ids as $assigned_id){
+        //     $temp_assign = $assigned_id;
+        //     for($i=$index; $i<$length; $i++){
+        //         if($temp_assign == $assigned_ids[$i]){
+        //             return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
+        //         }
+        //         $index++;
+        //     }
+        // }
         
-        $sign->description = $request->input('description');
-        $sign->file_name = $fileNameToStore;
-        $sign->user_id = auth()->user()->id;
-        $sign->save();
-
-        
-        foreach($assigned_ids as $assigned_id){
-            $assign = new Assign;
-            $assign->submitter_id = auth()->user()->id;
-            $assign->assigned_id = $assigned_id;
-            $assign->post_id = $sign->id;
-            $assign->status = 0;
-            $assign->save();
-        }
+        // $sign->description = $request->input('description');
+        // $sign->file_name = $fileNameToStore;
+        // $sign->user_id = auth()->user()->id;
+        // $sign->save();
 
         
+        // foreach($assigned_ids as $assigned_id){
+        //     $assign = new Assign;
+        //     $assign->submitter_id = auth()->user()->id;
+        //     $assign->assigned_id = $assigned_id;
+        //     $assign->post_id = $sign->id;
+        //     $assign->status = 0;
+        //     $assign->save();
+        // }
+
+        
+
         return redirect('/signs')->with('success', 'File submitted');
+    }
+
+    public function notif(){
+        $details = [
+            'title'=>'Digital Signature'
+        ];
+
+       \Mail::to('testinglaravelarnan@gmail.com')->send(new BlastGmail($details));
     }
 
     /**

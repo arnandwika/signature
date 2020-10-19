@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PagesController@index');
 
-Route::get('/about', 'PagesController@about');
+// Route::get('/about', 'PagesController@about');
 
-Route::get('/services', 'PagesController@services');
+// Route::get('/services', 'PagesController@services');
+
+Route::get('/signs/mail', 'SignsController@notif')->name('signs.mail');
 
 Route::get('/signs/history', 'SignsController@history')->name('signs.history');
 

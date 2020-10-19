@@ -18,7 +18,7 @@
                     <br><br>
                     <h3>Assigned File For You</h3>
                     @if(count($signs)>0)
-                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>File name</th>

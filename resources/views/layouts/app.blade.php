@@ -156,7 +156,7 @@
                                 <a class="nav-link" href="/posts">{{ ('Blog') }}</a>
                             </li> --}}
                             <li class="nav-item">
-                                <a class="nav-link text-light" href="/signs">{{ ('File') }}</a>
+                                <a class="nav-link text-light" href="/signs">{{ ('File Submitted') }}</a>
                             </li>
                         @endauth
                         @guest
