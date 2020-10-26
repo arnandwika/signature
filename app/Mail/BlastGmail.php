@@ -30,6 +30,6 @@ class BlastGmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Mail from Laravel Digital Signature')->view('signs.mail');
+        return $this->subject('Digital Signature Automated Mail System')->view('signs.mail');
     }
 }

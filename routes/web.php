@@ -19,8 +19,6 @@ Route::get('/', 'PagesController@index');
 
 // Route::get('/services', 'PagesController@services');
 
-Route::get('/signs/mail', 'SignsController@notif')->name('signs.mail');
-
 Route::get('/signs/history', 'SignsController@history')->name('signs.history');
 
 Route::get('/signs/upload/{sign}', 'SignsController@upload');

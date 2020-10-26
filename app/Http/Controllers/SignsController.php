@@ -66,6 +66,15 @@ class SignsController extends Controller
             }
         }
 
+        $mailTo = User::find($sign->user_id);
+        $details = [
+            'purpose'=>'reviewing',
+            'title'=>$sign->file_name,
+            'submitter_name'=>$mailTo->name,
+            'user'=>auth()->user()->name
+        ];
+        \Mail::to($mailTo->email)->send(new BlastGmail($details));
+
         $assign = Assign::where('post_id', $sign->id)->where('assigned_id', auth()->user()->id)->first();
         if(!is_null($assign)){
             $assign->update([
@@ -110,6 +119,15 @@ class SignsController extends Controller
         $assign->update([
             'status' => 2
         ]);
+
+        $mailTo = User::find($sign->user_id);
+        $details = [
+            'purpose'=>'signed',
+            'title'=>$sign->file_name,
+            'submitter_name'=>$mailTo->name,
+            'user'=>auth()->user()->name
+        ];
+        \Mail::to($mailTo->email)->send(new BlastGmail($details));
 
         return redirect('/home')->with('success', 'Signed File Uploaded');
     }
@@ -161,58 +179,60 @@ class SignsController extends Controller
             'description' => 'required',
             'assign' => 'required'
         ]);
+        $fileNameToStore='';
         //handle file upload
-        // if($request->hasFile('pdf_file')){
-        //     $filenameWithExt = $request->file('pdf_file')->getClientOriginalName();
-        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        //     $extension = $request->file('pdf_file')->getClientOriginalExtension();
-        //     $fileNameToStore = $filename.'_'.time().'.'.$extension;
-        //     $path = $request->file('pdf_file')->storeAs('public/pdf_files', $fileNameToStore);
-        // }
+        if($request->hasFile('pdf_file')){
+            $filenameWithExt = $request->file('pdf_file')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('pdf_file')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            $path = $request->file('pdf_file')->storeAs('public/pdf_files', $fileNameToStore);
+        }
 
-        // $sign = new Signs;
-        // $assigned_ids = $request->input('assign');
-        // $index=1;
-        // $length = count($assigned_ids);
-        // $i=0;
+        $sign = new Signs;
+        $assigned_ids = $request->input('assign');
+        $index=1;
+        $length = count($assigned_ids);
+        $i=0;
         
-        // foreach($assigned_ids as $assigned_id){
-        //     $temp_assign = $assigned_id;
-        //     for($i=$index; $i<$length; $i++){
-        //         if($temp_assign == $assigned_ids[$i]){
-        //             return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
-        //         }
-        //         $index++;
-        //     }
-        // }
+        foreach($assigned_ids as $assigned_id){
+            $temp_assign = $assigned_id;
+            for($i=$index; $i<$length; $i++){
+                if($temp_assign == $assigned_ids[$i]){
+                    return redirect('/signs/create')->with('error', 'Assigned employee has the same value.');
+                }
+                $index++;
+            }
+        }
         
-        // $sign->description = $request->input('description');
-        // $sign->file_name = $fileNameToStore;
-        // $sign->user_id = auth()->user()->id;
-        // $sign->save();
-
-        
-        // foreach($assigned_ids as $assigned_id){
-        //     $assign = new Assign;
-        //     $assign->submitter_id = auth()->user()->id;
-        //     $assign->assigned_id = $assigned_id;
-        //     $assign->post_id = $sign->id;
-        //     $assign->status = 0;
-        //     $assign->save();
-        // }
+        $sign->description = $request->input('description');
+        $sign->file_name = $fileNameToStore;
+        $sign->user_id = auth()->user()->id;
+        $sign->save();
 
         
+        foreach($assigned_ids as $assigned_id){
+            $mailTo = User::find($assigned_id);
+            $details = [
+                'purpose'=>'requesting',
+                'user'=>auth()->user()->name,
+                'assigned_user'=>$mailTo->name,
+                'title'=>$fileNameToStore,
+                'description'=>$request->input('description')
+            ];
+            \Mail::to($mailTo->email)->send(new BlastGmail($details));
+
+            $assign = new Assign;
+            $assign->submitter_id = auth()->user()->id;
+            $assign->assigned_id = $assigned_id;
+            $assign->post_id = $sign->id;
+            $assign->status = 0;
+            $assign->save();
+        }
 
         return redirect('/signs')->with('success', 'File submitted');
     }
 
-    public function notif(){
-        $details = [
-            'title'=>'Digital Signature'
-        ];
-
-       \Mail::to('testinglaravelarnan@gmail.com')->send(new BlastGmail($details));
-    }
 
     /**
      * Display the specified resource.
