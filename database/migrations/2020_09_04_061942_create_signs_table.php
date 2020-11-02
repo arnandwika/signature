@@ -16,7 +16,6 @@ class CreateSignsTable extends Migration
         Schema::create('signs', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->integer('submitter_id');
             $table->timestamps();
         });
     }
