@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
@@ -18,7 +18,7 @@
                     <br><br>
                     <h3>Assigned File For You</h3>
                     @if(count($signs)>0)
-                        <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
+                        <table id="example" class="table table-striped table-bordered table-responsive-lg" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>File name</th>

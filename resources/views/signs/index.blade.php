@@ -10,7 +10,7 @@
                 @php
                     $no = 1;
                 @endphp
-                <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
+                <table id="example" class="table table-striped table-bordered table-responsive-lg" style="width:100%">
                     <thead>
                         <tr>
                             <th>File name</th>

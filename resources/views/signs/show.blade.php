@@ -40,7 +40,7 @@
             Requested Signature
         </div>
         <div class="card-body">
-            <table id="example" class="table table-striped table-bordered table-responsive-md" style="width:100%">
+            <table id="example" class="table table-striped table-bordered table-responsive-lg" style="width:100%">
                 <thead>
                     <tr>
                         <th>No</th>
