@@ -7,6 +7,7 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    private $sentryID;
     /**
      * A list of the exception types that are not reported.
      *
@@ -36,6 +37,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
+        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            $this->sentryID = app('sentry')->captureException($exception);
+        }
+
         parent::report($exception);
     }
 
@@ -51,5 +56,8 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
+        // return response()->view('errors.500', [
+        //     'sentryID' => $this->sentryID
+        // ], 500);
     }
 }

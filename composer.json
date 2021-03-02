@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
         "laravelcollective/html": "^6.1",
+        "sentry/sentry-laravel": "^2.3",
         "yajra/laravel-datatables-buttons": "^4.0",
         "yajra/laravel-datatables-oracle": "~9.0"
     },

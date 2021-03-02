@@ -35,6 +35,10 @@ Route::get('/signs/downloading/{sign}', 'SignsController@downloadingFile');
 
 Route::get('/signs/downloadingoriginal/{sign}', 'SignsController@downloadingOriginalFile');
 
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
+
 
 
 Auth::routes();
